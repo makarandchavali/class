@@ -130,15 +130,15 @@ export default function AddModifyClass() {
         <div className="bg-white rounded-lg shadow-sm border border-gray-200">
           <div className="overflow-x-auto max-h-[600px] overflow-y-auto">
             <table className="w-full">
-              <thead className="bg-sky-600 text-white sticky top-0">
+              <thead className="bg-[#3B82F6] text-white sticky top-0">
                 <tr>
-                  <th className="px-6 py-4 text-left text-sm font-semibold border-r border-sky-500 w-20">
+                  <th className="px-6 py-4 text-left text-sm font-semibold border-r border-[#609AF8] w-20">
                     
                   </th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold border-r border-sky-500">
+                  <th className="px-6 py-4 text-left text-sm font-semibold border-r border-[#609AF8]">
                     CLASS NAME
                   </th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold border-r border-sky-500">
+                  <th className="px-6 py-4 text-left text-sm font-semibold border-r border-[#609AF8]">
                     SECTIONS
                   </th>
                   <th className="px-6 py-4 text-left text-sm font-semibold">

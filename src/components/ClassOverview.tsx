@@ -334,30 +334,30 @@ export default function ClassOverview() {
 
           <div className="overflow-x-auto max-h-[500px] overflow-y-auto">
             <table className="w-full">
-              <thead className="bg-sky-600 text-white sticky top-0">
+              <thead className="bg-[#3B82F6] text-white sticky top-0">
                 <tr>
-                  <th className="px-4 py-3 text-left text-sm font-semibold border-r border-sky-500">
+                  <th className="px-4 py-3 text-left text-sm font-semibold border-r border-[#609AF8]">
                     Class & Section
                   </th>
-                  <th className="px-4 py-3 text-left text-sm font-semibold border-r border-sky-500">
+                  <th className="px-4 py-3 text-left text-sm font-semibold border-r border-[#609AF8]">
                     Class Teacher
                   </th>
-                  <th className="px-4 py-3 text-left text-sm font-semibold border-r border-sky-500">
+                  <th className="px-4 py-3 text-left text-sm font-semibold border-r border-[#609AF8]">
                     Total Subjects
                   </th>
-                  <th className="px-4 py-3 text-left text-sm font-semibold border-r border-sky-500">
+                  <th className="px-4 py-3 text-left text-sm font-semibold border-r border-[#609AF8]">
                     Time Table Created
                   </th>
-                  <th className="px-4 py-3 text-left text-sm font-semibold border-r border-sky-500">
+                  <th className="px-4 py-3 text-left text-sm font-semibold border-r border-[#609AF8]">
                     Old Admissions
                   </th>
-                  <th className="px-4 py-3 text-left text-sm font-semibold border-r border-sky-500">
+                  <th className="px-4 py-3 text-left text-sm font-semibold border-r border-[#609AF8]">
                     New Admissions
                   </th>
-                  <th className="px-4 py-3 text-left text-sm font-semibold border-r border-sky-500">
+                  <th className="px-4 py-3 text-left text-sm font-semibold border-r border-[#609AF8]">
                     Active Students
                   </th>
-                  <th className="px-4 py-3 text-left text-sm font-semibold border-r border-sky-500">
+                  <th className="px-4 py-3 text-left text-sm font-semibold border-r border-[#609AF8]">
                     Deactivated Students
                   </th>
                   <th className="px-4 py-3 text-left text-sm font-semibold">

@@ -17,15 +17,13 @@ import {
 
 const academicYears = [
   'Apr 2025 - Mar 2026',
-  'Apr 2024 - Mar 2025',
-  'Apr 2023 - Mar 2024',
 ];
 
 export default function AssignTeachers() {
-  const [selectedYear, setSelectedYear] = useState(academicYears[0]);
+  const [selectedYear, setSelectedYear] = useState('');
   const [isYearDropdownOpen, setIsYearDropdownOpen] = useState(false);
-  const [selectedClass, setSelectedClass] = useState('4th');
-  const [selectedSection, setSelectedSection] = useState('A');
+  const [selectedClass, setSelectedClass] = useState('');
+  const [selectedSection, setSelectedSection] = useState('');
   const [searchStaff, setSearchStaff] = useState('');
   const [assistantTeacher, setAssistantTeacher] = useState('');
   
@@ -50,6 +48,20 @@ export default function AssignTeachers() {
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
+
+  // reset dependent selections when parent selection changes
+  useEffect(() => {
+    if (!selectedYear) {
+      setSelectedClass('');
+      setSelectedSection('');
+    }
+  }, [selectedYear]);
+
+  useEffect(() => {
+    if (!selectedClass) {
+      setSelectedSection('');
+    }
+  }, [selectedClass]);
 
   return (
     <div className="min-h-screen bg-gray-50 font-inter">
@@ -120,7 +132,7 @@ export default function AssignTeachers() {
                 className="w-full flex items-center gap-2 px-3 py-2.5 bg-white border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
               >
                 <Calendar className="w-5 h-5 text-gray-700" />
-                <span className="text-sm font-normal flex-1 text-left">{selectedYear}</span>
+                <span className="text-sm font-normal flex-1 text-left">{selectedYear || 'Select Academic Year'}</span>
                 <ChevronDown className={`w-4 h-4 text-gray-600 transition-transform ${isYearDropdownOpen ? 'rotate-180' : ''}`} />
               </button>
 
@@ -152,13 +164,11 @@ export default function AssignTeachers() {
     <select
       value={selectedClass}
       onChange={(e) => setSelectedClass(e.target.value)}
-      className="w-full pl-10 pr-10 py-2.5 bg-white border border-gray-300 rounded-md appearance-none text-gray-900 focus:outline-none focus:ring-2 focus:ring-sky-600"
+      disabled={!selectedYear}
+      className="w-full pl-10 pr-10 py-2.5 bg-white disabled:bg-gray-100 border border-gray-300 rounded-md appearance-none text-gray-900 focus:outline-none focus:ring-2 focus:ring-sky-600"
     >
-      <option>1st</option>
-      <option>2nd</option>
-      <option>3rd</option>
-      <option>4th</option>
-      <option>5th</option>
+      <option value="">Select Class</option>
+      <option value="4th">4th</option>
     </select>
     <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
   </div>
@@ -171,54 +181,65 @@ export default function AssignTeachers() {
     <select
       value={selectedSection}
       onChange={(e) => setSelectedSection(e.target.value)}
-      className="w-full pl-10 pr-10 py-2.5 bg-white border border-gray-300 rounded-md appearance-none text-gray-900 focus:outline-none focus:ring-2 focus:ring-sky-600"
+      disabled={!selectedClass}
+      className="w-full pl-10 pr-10 py-2.5 bg-white disabled:bg-gray-100 border border-gray-300 rounded-md appearance-none text-gray-900 focus:outline-none focus:ring-2 focus:ring-sky-600"
     >
-      <option>A</option>
-      <option>B</option>
-      <option>C</option>
+      <option value="">Select Section</option>
+      <option value="A">A</option>
     </select>
     <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
   </div>
 </div>
 
-          <div className="flex-1">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Search Staff</label>
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-              <input
-                type="text"
-                value={searchStaff}
-                onChange={(e) => setSearchStaff(e.target.value)}
-                className="w-full pl-10 pr-10 py-2.5 bg-white border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-sky-600"
-                placeholder=""
-              />
-              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-            </div>
-          </div>
+          {selectedYear && selectedClass && selectedSection ? (
+            <>
+              <div className="flex-1">
+                <label className="block text-sm font-medium text-gray-700 mb-2">Search Staff</label>
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <input
+                    type="text"
+                    value={searchStaff}
+                    onChange={(e) => setSearchStaff(e.target.value)}
+                    className="w-full pl-10 pr-10 py-2.5 bg-white border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-sky-600"
+                    placeholder=""
+                  />
+                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                </div>
+              </div>
 
-          <div className="flex-1">
-            <label className="block text-sm font-medium text-gray-700 mb-2">Assistant Class Teacher</label>
-            <div className="relative">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-              <input
-                type="text"
-                value={assistantTeacher}
-                onChange={(e) => setAssistantTeacher(e.target.value)}
-                className="w-full pl-10 pr-10 py-2.5 bg-white border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-sky-600"
-                placeholder=""
-              />
-              <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-            </div>
-          </div>
+              <div className="flex-1">
+                <label className="block text-sm font-medium text-gray-700 mb-2">Assistant Class Teacher</label>
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                  <input
+                    type="text"
+                    value={assistantTeacher}
+                    onChange={(e) => setAssistantTeacher(e.target.value)}
+                    className="w-full pl-10 pr-10 py-2.5 bg-white border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-sky-600"
+                    placeholder=""
+                  />
+                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
+                </div>
+              </div>
 
-          <button className="flex items-center gap-2 px-6 py-2.5 bg-orange-500 text-white rounded-md hover:bg-orange-600 transition-colors font-medium">
-            <Save className="w-4 h-4" />
-            SAVE
-          </button>
+              <button className="flex items-center gap-2 px-6 py-2.5 bg-orange-500 text-white rounded-md hover:bg-orange-600 transition-colors font-medium">
+                <Save className="w-4 h-4" />
+                SAVE
+              </button>
+            </>
+          ) : (
+            <div className="flex-1 col-span-full">
+              <div className="p-4 bg-yellow-50 border border-yellow-200 rounded text-sm text-yellow-800">
+                Please select Academic Year → Class → Section to view and manage assignments.
+              </div>
+            </div>
+          )}
         </div>
 
-        {/* Statistics Cards */}
-        <div className="flex items-center justify-between mb-6">
+        {/* Statistics Cards (shown only after selections) */}
+        {selectedYear && selectedClass && selectedSection && (
+          <div className="flex items-center justify-between mb-6">
           <div className="flex gap-4">
             <div className="bg-green-600 rounded-lg p-6 flex items-center gap-4 min-w-[200px]">
               <div className="w-12 h-12 bg-white rounded flex items-center justify-center">
@@ -245,22 +266,24 @@ export default function AssignTeachers() {
             <Save className="w-4 h-4" />
             SAVE
           </button>
-        </div>
+          </div>
+        )}
 
-        {/* Table */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200">
+        {/* Table (shown only after selections) */}
+        {selectedYear && selectedClass && selectedSection && (
+          <div className="bg-white rounded-lg shadow-sm border border-gray-200">
           <div className="overflow-x-auto max-h-[500px] overflow-y-auto">
             <table className="w-full">
-              <thead className="bg-sky-600 text-white sticky top-0">
+              <thead className="bg-[#3B82F6] text-white sticky top-0">
                 <tr>
-                  <th className="px-6 py-4 text-left text-sm font-semibold border-r border-sky-500 w-16"></th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold border-r border-sky-500">
+                  <th className="px-6 py-4 text-left text-sm font-semibold border-r border-[#609AF8] w-16"></th>
+                  <th className="px-6 py-4 text-left text-sm font-semibold border-r border-[#609AF8]">
                     Subject Name
                   </th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold border-r border-sky-500">
+                  <th className="px-6 py-4 text-left text-sm font-semibold border-r border-[#609AF8]">
                     Subject Code
                   </th>
-                  <th className="px-6 py-4 text-left text-sm font-semibold border-r border-sky-500">
+                  <th className="px-6 py-4 text-left text-sm font-semibold border-r border-[#609AF8]">
                     Primary Teacher
                   </th>
                   <th className="px-6 py-4 text-left text-sm font-semibold">
@@ -312,7 +335,8 @@ export default function AssignTeachers() {
               </tbody>
             </table>
           </div>
-        </div>
+          </div>
+        )}
       </div>
     </div>
   );

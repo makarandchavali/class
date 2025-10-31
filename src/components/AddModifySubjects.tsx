@@ -20,14 +20,20 @@ export default function AddModifySubjects() {
   const [selectedCourse, setSelectedCourse] = useState('');
   
   const [subjects] = useState([
-    { id: 1, name: 'English', code: '', description: '', type: 'Scholastic', mandatory: 'Mandatory' },
-    { id: 2, name: 'Maths', code: '', description: '', type: 'Scholastic', mandatory: 'Mandatory' },
-    { id: 3, name: 'Hindi', code: '', description: '', type: 'Scholastic', mandatory: 'Mandatory' },
-    { id: 4, name: 'EVS', code: '', description: '', type: 'Scholastic', mandatory: 'Mandatory' },
-    { id: 5, name: 'GK', code: '', description: '', type: 'Scholastic', mandatory: 'Mandatory' },
-    { id: 6, name: 'COMPUTER', code: '', description: '', type: 'Scholastic', mandatory: 'Mandatory' },
-    { id: 7, name: 'Work Education', code: '', description: '', type: 'Co Scholastic', mandatory: 'Mandatory' },
-    { id: 8, name: 'Health & Physical Education', code: '', description: '', type: 'Co Scholastic', mandatory: 'Mandatory' },
+  { id: 1, name: 'ENGLISH', code: 'A', description: 'LANGUAGE', type: 'Scholastic', mandatory: 'Mandatory', course: 'a' },
+  { id: 2, name: 'MATHS', code: 'B', description: 'NUMERICAL', type: 'Scholastic', mandatory: 'Mandatory', course: 'b' },
+  { id: 3, name: 'HINDI', code: 'A', description: 'LANGUAGE', type: 'Scholastic', mandatory: 'Mandatory', course: 'a' },
+  { id: 4, name: 'EVS', code: 'C', description: 'ENVIRONMENTAL STUDIES', type: 'Scholastic', mandatory: 'Mandatory', course: 'c' },
+  { id: 5, name: 'GK', code: 'D', description: 'GENERAL KNOWLEDGE', type: 'Scholastic', mandatory: 'Mandatory', course: 'd' },
+  { id: 6, name: 'COMPUTER', code: 'B', description: 'COMPUTER SCIENCE', type: 'Scholastic', mandatory: 'Mandatory', course: 'b' },
+  { id: 7, name: 'WORK EDUCATION', code: 'C', description: 'SKILLS', type: 'Co Scholastic', mandatory: 'Mandatory', course: 'c' },
+  { id: 8, name: 'HEALTH & PHYSICAL EDUCATION', code: 'D', description: 'PHYSICAL FITNESS', type: 'Co Scholastic', mandatory: 'Mandatory', course: 'd' },
+  { id: 9, name: 'ART', code: 'A', description: 'CREATIVE ART', type: 'Co Scholastic', mandatory: 'Elective', course: 'a' },
+  { id: 10, name: 'MUSIC', code: 'B', description: 'MUSIC', type: 'Co Scholastic', mandatory: 'Elective', course: 'b' },
+  { id: 11, name: 'SCIENCE', code: 'A', description: 'GENERAL SCIENCE', type: 'Scholastic', mandatory: 'Mandatory', course: 'a' },
+  { id: 12, name: 'SOCIAL SCIENCE', code: 'C', description: 'CIVICS & HISTORY', type: 'Scholastic', mandatory: 'Mandatory', course: 'c' },
+  { id: 13, name: 'PHYSICAL EDUCATION', code: 'D', description: 'SPORTS', type: 'Co Scholastic', mandatory: 'Mandatory', course: 'd' },
+  { id: 14, name: 'SANSKRIT', code: 'A', description: 'CLASSICAL LANGUAGE', type: 'Scholastic', mandatory: 'Elective', course: 'a' },
   ]);
 
   // Calculate statistics
@@ -39,6 +45,23 @@ export default function AddModifySubjects() {
   
   const coScholasticMandatory = coScholasticSubjects.filter(s => s.mandatory === 'Mandatory').length;
   const coScholasticElective = coScholasticSubjects.filter(s => s.mandatory === 'Elective').length;
+
+  // Apply filters from the three search controls
+  const filteredSubjects = subjects.filter((s) => {
+    // Filter by subject type if set
+    if (selectedSubjectType && selectedSubjectType !== '' && s.type !== selectedSubjectType) return false;
+
+    // selectedCourse now maps to the subject's `course` field (options: a,b,c,d)
+    if (selectedCourse && selectedCourse !== '') {
+      if (s.course !== selectedCourse) return false;
+    }
+
+    // selectedClass is currently not a per-subject property in the dataset,
+    // so we don't filter by class here. If subjects gain a class field later,
+    // this is where it should be applied.
+
+    return true;
+  });
 
   return (
     <div className="min-h-screen bg-gray-50 font-inter">
@@ -127,7 +150,7 @@ export default function AddModifySubjects() {
                 onChange={(e) => setSelectedSubjectType(e.target.value)}
                 className="w-full px-4 py-2.5 bg-white border border-gray-300 rounded-md appearance-none text-gray-900 focus:outline-none focus:ring-2 focus:ring-sky-600"
               >
-                <option value=""></option>
+                <option value="">ALL</option>
                 <option>Scholastic</option>
                 <option>Co Scholastic</option>
               </select>
@@ -139,13 +162,17 @@ export default function AddModifySubjects() {
             <label className="block text-sm font-medium text-gray-700 mb-2">Select Subject/ Course</label>
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-              <input
-                type="text"
+              <select
                 value={selectedCourse}
                 onChange={(e) => setSelectedCourse(e.target.value)}
-                className="w-full pl-10 pr-10 py-2.5 bg-white border border-gray-300 rounded-md text-gray-900 focus:outline-none focus:ring-2 focus:ring-sky-600"
-                placeholder="Search..."
-              />
+                className="w-full pl-10 pr-10 py-2.5 bg-white border border-gray-300 rounded-md appearance-none text-gray-900 focus:outline-none focus:ring-2 focus:ring-sky-600"
+              >
+                <option value="">All</option>
+                <option value="a">A</option>
+                <option value="b">B</option>
+                <option value="c">C</option>
+                <option value="d">D</option>
+              </select>
               <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
             </div>
           </div>
@@ -199,22 +226,22 @@ export default function AddModifySubjects() {
 
           <div className="overflow-x-auto max-h-[500px] overflow-y-auto">
             <table className="w-full">
-              <thead className="bg-sky-600 text-white sticky top-0">
+              <thead className="bg-[#3B82F6] text-white sticky top-0">
                 <tr>
-                  <th className="px-4 py-4 text-left text-sm font-semibold border-r border-sky-500 w-16"></th>
-                  <th className="px-4 py-4 text-left text-sm font-semibold border-r border-sky-500">
+                  <th className="px-4 py-4 text-left text-sm font-semibold border-r border-[#609AF8] w-16"></th>
+                  <th className="px-4 py-4 text-left text-sm font-semibold border-r border-[#609AF8]">
                     Subject Name
                   </th>
-                  <th className="px-4 py-4 text-left text-sm font-semibold border-r border-sky-500">
+                  <th className="px-4 py-4 text-left text-sm font-semibold border-r border-[#609AF8]">
                     Subject Code
                   </th>
-                  <th className="px-4 py-4 text-left text-sm font-semibold border-r border-sky-500">
+                  <th className="px-4 py-4 text-left text-sm font-semibold border-r border-[#609AF8]">
                     Description
                   </th>
-                  <th className="px-4 py-4 text-left text-sm font-semibold border-r border-sky-500">
+                  <th className="px-4 py-4 text-left text-sm font-semibold border-r border-[#609AF8]">
                     Type
                   </th>
-                  <th className="px-4 py-4 text-left text-sm font-semibold border-r border-sky-500">
+                  <th className="px-4 py-4 text-left text-sm font-semibold border-r border-[#609AF8]">
                     Mandatory/Elective
                   </th>
                   <th className="px-4 py-4 text-left text-sm font-semibold">
@@ -224,31 +251,39 @@ export default function AddModifySubjects() {
               </thead>
 
               <tbody className="bg-white">
-                {subjects.map((subject, index) => (
-                  <tr key={subject.id} className="border-b border-gray-200 hover:bg-gray-50 transition-colors">
-                    <td className="px-4 py-4">
-                      <div className="flex items-center gap-2">
-                        <GripVertical className="w-4 h-4 text-gray-400 cursor-move" />
-                        <span className="text-gray-400 text-sm">{String(index + 1).padStart(2, '0')}.</span>
-                      </div>
-                    </td>
-                    <td className="px-4 py-4 text-gray-900">{subject.name}</td>
-                    <td className="px-4 py-4 text-gray-700">{subject.code}</td>
-                    <td className="px-4 py-4 text-gray-700">{subject.description}</td>
-                    <td className="px-4 py-4 text-gray-900">{subject.type}</td>
-                    <td className="px-4 py-4 text-gray-900">{subject.mandatory}</td>
-                    <td className="px-4 py-4">
-                      <div className="flex items-center gap-2">
-                        <button className="text-orange-500 hover:text-orange-600 transition-colors">
-                          <Pencil className="w-5 h-5" />
-                        </button>
-                        <button className="text-orange-500 hover:text-orange-600 transition-colors">
-                          <Trash2 className="w-5 h-5" />
-                        </button>
-                      </div>
+                {filteredSubjects.length === 0 ? (
+                  <tr>
+                    <td className="px-4 py-6 text-center text-gray-500" colSpan={7}>
+                      No subjects found for the selected filters.
                     </td>
                   </tr>
-                ))}
+                ) : (
+                  filteredSubjects.map((subject, index) => (
+                    <tr key={subject.id} className="border-b border-gray-200 hover:bg-gray-50 transition-colors">
+                      <td className="px-4 py-4">
+                        <div className="flex items-center gap-2">
+                          <GripVertical className="w-4 h-4 text-gray-400 cursor-move" />
+                          <span className="text-gray-400 text-sm">{String(index + 1).padStart(2, '0')}.</span>
+                        </div>
+                      </td>
+                      <td className="px-4 py-4 text-gray-900">{subject.name}</td>
+                      <td className="px-4 py-4 text-gray-700">{subject.code}</td>
+                      <td className="px-4 py-4 text-gray-700">{subject.description}</td>
+                      <td className="px-4 py-4 text-gray-900">{subject.type}</td>
+                      <td className="px-4 py-4 text-gray-900">{subject.mandatory}</td>
+                      <td className="px-4 py-4">
+                        <div className="flex items-center gap-2">
+                          <button className="text-orange-500 hover:text-orange-600 transition-colors">
+                            <Pencil className="w-5 h-5" />
+                          </button>
+                          <button className="text-orange-500 hover:text-orange-600 transition-colors">
+                            <Trash2 className="w-5 h-5" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                )}
               </tbody>
             </table>
           </div>
